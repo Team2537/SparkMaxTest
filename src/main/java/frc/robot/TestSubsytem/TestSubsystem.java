@@ -9,6 +9,8 @@ package frc.robot.TestSubsytem;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -28,6 +30,17 @@ public class TestSubsystem extends Subsystem {
     sparkMax = new CANSparkMax(0, MotorType.kBrushless);
     // stick = new Joystick(0);
     enc = new CANEncoder(sparkMax);
+    
+  }
+
+  public void configureSpark(){
+    sparkMax.setParameter(ConfigParameter.kEncoderCountsPerRev, 360);
+  }
+
+  public void returnSpark(){
+    System.out.println(sparkMax.getEncoder());
+    System.out.println(enc.getPosition());
+    System.out.println(enc.getVelocity());
     
   }
 
