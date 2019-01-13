@@ -34,13 +34,14 @@ public class TestSubsystem extends Subsystem {
   }
 
   public void configureSpark(){
-    sparkMax.setParameter(ConfigParameter.kEncoderCountsPerRev, 360);
+    sparkMax.setParameter(ConfigParameter.kEncoderCountsPerRev, 1);
   }
 
   public void returnSpark(){
-    System.out.println(sparkMax.getEncoder());
+    // System.out.println(sparkMax.getEncoder());
     System.out.println(enc.getPosition());
-    System.out.println(enc.getVelocity());
+    
+    // System.out.println(enc.getVelocity());
     
   }
 

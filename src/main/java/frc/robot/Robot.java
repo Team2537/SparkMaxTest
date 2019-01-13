@@ -96,11 +96,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     Robot.testsys.configureSpark();
-    Robot.testsys.setMotor(0.5);
+
   }
   
   @Override
   public void teleopPeriodic() {
+    // Robot.testsys.setMotor(0.5);
     Robot.testsys.returnSpark();
   }
 
