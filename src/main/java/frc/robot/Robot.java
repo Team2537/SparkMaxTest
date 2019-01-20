@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static DriveSubsystem drivesys;
   public static TestSubsystem testsys;
+  double leftEncoderStartValue, rightEncoderStartValue;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -73,6 +74,8 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+    leftEncoderStartValue = Robot.drivesys.getLeftEncoder();
+    rightEncoderStartValue = Robot.drivesys.getRightEnoder();
   }
 
   /**
@@ -86,8 +89,21 @@ public class Robot extends TimedRobot {
         break;
       case kDefaultAuto:
       default:
-        // Put default auto code here
+        if((Robot.drivesys.getLeftEncoder() - leftEncoderStartValue) <= 50){
+          Robot.drivesys.setLeftMotors(-0.5);
+        } else {
+          Robot.drivesys.setLeftMotors(0);
+        }
+
+        if((Robot.drivesys.getRightEnoder() - rightEncoderStartValue) <= 50){
+          Robot.drivesys.setRightMotors(-0.5);
+        } else {
+          Robot.drivesys.setRightMotors(0);
+        }
+
+        Robot.drivesys.printEncoders();
         break;
+      
     }
   }
 

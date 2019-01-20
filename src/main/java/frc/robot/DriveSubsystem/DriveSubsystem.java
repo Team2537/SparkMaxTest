@@ -24,14 +24,13 @@ public class DriveSubsystem extends Subsystem {
   private static CANEncoder encOne, encTwo, encThree, encFour, encFive, encSix;
 
   public DriveSubsystem(){
-    sparkOne = new CANSparkMax(6, MotorType.kBrushless);
+    sparkOne = new CANSparkMax(0, MotorType.kBrushless);
     sparkTwo = new CANSparkMax(1, MotorType.kBrushless);
     sparkThree = new CANSparkMax(2, MotorType.kBrushless);
     sparkFour = new CANSparkMax(3, MotorType.kBrushless);
     sparkFive = new CANSparkMax(4, MotorType.kBrushless);
     sparkSix = new CANSparkMax(5, MotorType.kBrushless);
 
-    
     
 
     encOne = new CANEncoder(sparkOne);
@@ -54,24 +53,34 @@ public class DriveSubsystem extends Subsystem {
   public void setMotor(CANSparkMax motor, double speed){
     motor.set(speed);
   }
-  public void setLeftMotors(double speed){
+  public void setRightMotors(double speed){
     sparkOne.set(speed);
     sparkTwo.set(speed);
     sparkThree.set(speed);
   }
 
-  public void setRightMotors(double speed){
-    sparkFour.set(speed);
-    sparkFive.set(speed);
-    sparkSix.set(speed);
+  public void setLeftMotors(double speed){
+    sparkFour.set(-speed);
+    sparkFive.set(-speed);
+    sparkSix.set(-speed);
   }
 
   public double getLeftJoystick(){
-    return leftJoystick.getRawAxis(0);
+    if (Math.abs(leftJoystick.getRawAxis(1)) >= 0.05){
+      return leftJoystick.getRawAxis(1);
+    }  else {
+      return 0;
+    }
+    
   }
 
   public double getRightJoystick(){
-    return rightJoystick.getRawAxis(0);
+    if (Math.abs(rightJoystick.getRawAxis(1)) >= 0.05) {
+      return rightJoystick.getRawAxis(1);
+    } else {
+      return 0;
+    }
+    
   }
 
   public void printEncoders(){
@@ -82,5 +91,17 @@ public class DriveSubsystem extends Subsystem {
     System.out.println("Encoder Five : " + encFive.getPosition());
     System.out.println("Encoder Six : " + encSix.getPosition());
   }
+
+  public double getRightEnoder(){
+    double rvalue = ((encOne.getPosition() + encTwo.getPosition() + encThree.getPosition()) / 3);
+    return rvalue;
+  }
+
+  public double getLeftEncoder(){
+    double lvalue = ((encFour.getPosition() + encFive.getPosition() + encSix.getPosition()) / 3);
+    return lvalue;
+  }
+
+  
 }
 
