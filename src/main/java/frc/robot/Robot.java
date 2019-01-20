@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.DriveSubsystem.DriveStraightCommand;
 import frc.robot.DriveSubsystem.DriveSubsystem;
 import frc.robot.TestSubsytem.TestSubsystem;
 
@@ -71,11 +72,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
-    leftEncoderStartValue = Robot.drivesys.getLeftEncoder();
-    rightEncoderStartValue = Robot.drivesys.getRightEnoder();
+    Scheduler.getInstance().add(new DriveStraightCommand());
+    
   }
 
   /**
@@ -83,28 +81,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        if((Robot.drivesys.getLeftEncoder() - leftEncoderStartValue) <= 50){
-          Robot.drivesys.setLeftMotors(-0.5);
-        } else {
-          Robot.drivesys.setLeftMotors(0);
-        }
-
-        if((Robot.drivesys.getRightEnoder() - rightEncoderStartValue) <= 50){
-          Robot.drivesys.setRightMotors(-0.5);
-        } else {
-          Robot.drivesys.setRightMotors(0);
-        }
-
-        Robot.drivesys.printEncoders();
-        break;
-      
-    }
+      Scheduler.getInstance().run();
   }
 
   /**
@@ -112,6 +89,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
+    Scheduler.getInstance().removeAll();
 
   }
   

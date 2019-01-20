@@ -26,7 +26,8 @@ public class DriveCommand extends Command {
   protected void execute() {
     Robot.drivesys.setLeftMotors(Robot.drivesys.getLeftJoystick());
     Robot.drivesys.setRightMotors(Robot.drivesys.getRightJoystick());
-    Robot.drivesys.printEncoders();
+    System.out.println("Right Encoders : " + Robot.drivesys.getRightValue());
+    System.out.println("Left Encoders : " + Robot.drivesys.getLeftValue());
   }
 
   // Make this return true when this Command no longer needs to run execute()

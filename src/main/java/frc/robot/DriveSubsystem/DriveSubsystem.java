@@ -22,6 +22,7 @@ public class DriveSubsystem extends Subsystem {
   private static CANSparkMax sparkOne, sparkTwo, sparkThree, sparkFour, sparkFive, sparkSix;
   private static Joystick leftJoystick, rightJoystick;
   private static CANEncoder encOne, encTwo, encThree, encFour, encFive, encSix;
+  private CANEncoder[] encLeftArray, encRightArray;
 
   public DriveSubsystem(){
     sparkOne = new CANSparkMax(0, MotorType.kBrushless);
@@ -33,15 +34,18 @@ public class DriveSubsystem extends Subsystem {
 
     
 
-    encOne = new CANEncoder(sparkOne);
-    encTwo = new CANEncoder(sparkTwo);
-    encThree = new CANEncoder(sparkThree);
-    encFour = new CANEncoder(sparkFour);
-    encFive = new CANEncoder(sparkFive);
-    encSix = new CANEncoder(sparkSix);
+    encOne = sparkOne.getEncoder();
+    encTwo = sparkTwo.getEncoder();
+    encThree = sparkThree.getEncoder();
+    encFour = sparkFour.getEncoder();
+    encFive = sparkFive.getEncoder();
+    encSix = sparkSix.getEncoder();
 
     leftJoystick = new Joystick(0);
     rightJoystick = new Joystick(1);
+
+    encRightArray = new CANEncoder[]{encOne, encTwo, encThree};
+    encLeftArray = new CANEncoder[]{encFour, encFive, encSix};
   }
 
   @Override
@@ -84,12 +88,8 @@ public class DriveSubsystem extends Subsystem {
   }
 
   public void printEncoders(){
-    System.out.println("Encoder One :" + encOne.getPosition());
-    System.out.println("Encoder Two :" + encTwo.getPosition());
-    System.out.println("Encoder Three :" + encThree.getPosition());
-    System.out.println("Encoder Four : " + encFour.getPosition());
-    System.out.println("Encoder Five : " + encFive.getPosition());
-    System.out.println("Encoder Six : " + encSix.getPosition());
+    System.out.println("Right Encoders : " + getRightValue());
+    System.out.println("Left Encoders : " + getLeftValue());
   }
 
   public double getRightEnoder(){
@@ -100,6 +100,40 @@ public class DriveSubsystem extends Subsystem {
   public double getLeftEncoder(){
     double lvalue = ((encFour.getPosition() + encFive.getPosition() + encSix.getPosition()) / 3);
     return lvalue;
+  }
+
+  public double getRightValue(){
+    double totalEncoders = 0;
+    double encoderValues = 0;
+    for(CANEncoder i: encRightArray){
+      if(i.getPosition() != 0){
+        encoderValues += i.getPosition();
+        totalEncoders++;
+      }
+    }
+    if(totalEncoders == 0){
+      return 0;
+    } else {
+      return (-encoderValues / totalEncoders);
+    }
+    
+  }
+
+  public double getLeftValue(){
+    double totalEncoders = 0;
+    double encoderValues = 0;
+    for(CANEncoder i: encLeftArray){
+      if(i.getPosition() != 0){
+        encoderValues += i.getPosition();
+        totalEncoders++;
+      }
+    }
+    if(totalEncoders == 0){
+      return 0;
+    } else {
+      return (encoderValues / totalEncoders);
+    }
+    
   }
 
   
