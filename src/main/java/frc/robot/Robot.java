@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.DriveSubsystem.DriveStraightCommand;
 import frc.robot.DriveSubsystem.DriveSubsystem;
 import frc.robot.TestSubsytem.TestSubsystem;
 
@@ -43,8 +42,8 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    drivesys = new DriveSubsystem();
-    drivesys.initDefaultCommand();
+    testsys = new TestSubsystem();
+    testsys.initDefaultCommand();
   }
 
   /**
@@ -72,7 +71,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    Scheduler.getInstance().add(new DriveStraightCommand());
     
   }
 
@@ -89,7 +87,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
-    Scheduler.getInstance().removeAll();
+
 
   }
   

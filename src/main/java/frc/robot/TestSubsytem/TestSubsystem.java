@@ -7,13 +7,10 @@
 
 package frc.robot.TestSubsytem;
 
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
-import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Joystick;
+
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -21,42 +18,29 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class TestSubsystem extends Subsystem {
   
-  private static CANSparkMax sparkMax;
-  private static CANEncoder enc;
-  private Joystick stick;
+  private DigitalInput photoelectricOneDark, photoelectricOneLight;
+  private AnalogInput photoelectricOneDarkA, photoelectricOneLightA;
+  
 
   public TestSubsystem(){
+      photoelectricOneDark = new DigitalInput(0);
+      photoelectricOneLight = new DigitalInput(1);
+      photoelectricOneDarkA = new AnalogInput(0);
+      photoelectricOneLightA = new AnalogInput(1);
 
-    sparkMax = new CANSparkMax(0, MotorType.kBrushless);
-    // stick = new Joystick(0);
-    enc = new CANEncoder(sparkMax);
-    
   }
 
-  public void configureSpark(){
-    sparkMax.setParameter(ConfigParameter.kEncoderCountsPerRev, 1);
+  public void getSensorDO(){
+    System.out.println("Dark Input DO " + photoelectricOneDark.get());
+    System.out.println("Light Input DO " + photoelectricOneLight.get());
   }
 
-  public void returnSpark(){
-    // System.out.println(sparkMax.getEncoder());
-    System.out.println(enc.getPosition());
-    
-    // System.out.println(enc.getVelocity());
-    
+  public void getSensorAI(){
+    System.out.println("Dark Input Average Value" + photoelectricOneDarkA.getAverageValue());
+    System.out.println("Dark Input value " + photoelectricOneDarkA.getValue());
+    System.out.println("Light Input Average Value " + photoelectricOneLightA.getAverageValue());
+    System.out.println("Light Input Average Value " + photoelectricOneLightA.getValue());
   }
-
-  public void setMotor(double speed){
-    sparkMax.set(speed);
-  }
-
-  // public double getStick(){
-  //   return stick.getRawAxis(0);
-  // }
-
-  public double getEncoder(){
-    return enc.getPosition();
-  }
-
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new TestCommand());

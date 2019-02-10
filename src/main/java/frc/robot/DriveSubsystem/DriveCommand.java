@@ -24,10 +24,7 @@ public class DriveCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.drivesys.setLeftMotors(Robot.drivesys.getLeftJoystick());
-    Robot.drivesys.setRightMotors(Robot.drivesys.getRightJoystick());
-    System.out.println("Right Encoders : " + Robot.drivesys.getRightValue());
-    System.out.println("Left Encoders : " + Robot.drivesys.getLeftValue());
+    Robot.drivesys.setMotor(0.5);
   }
 
   // Make this return true when this Command no longer needs to run execute()
