@@ -5,36 +5,34 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.DriveSubsystem;
+package frc.robot.intake;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.HumanInput;
 import frc.robot.Robot;
 
-public class DriveCommand extends Command {
+public class FlywheelCommand extends Command {
+  private boolean state;
+  private static final double FLYWHEEL_SPEED = 0.8;
 
-  private boolean smartBoardBool = false;
-  private long startTime;
+  public FlywheelCommand(boolean state) {
+    requires(Robot.intakesys);
+    this.state = state;
 
-  public DriveCommand() {
-    requires(Robot.drivesys);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    System.out.println("we rollin");
-    System.out.println(smartBoardBool);
-    SmartDashboard.putBoolean("testBool", smartBoardBool);
+    if(state){
+      Robot.intakesys.setIntakeFlywheels(FLYWHEEL_SPEED);
+    } else {
+      Robot.intakesys.setIntakeFlywheels(-FLYWHEEL_SPEED);
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    
-    Robot.drivesys.setLeftMotors(HumanInput.getJoystickAxisLeft(HumanInput.AXIS_Y));
-    Robot.drivesys.setRightMotors(HumanInput.getJoystickAxisRight(HumanInput.AXIS_Y));
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -46,11 +44,13 @@ public class DriveCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.intakesys.setIntakeFlywheels(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.intakesys.setIntakeFlywheels(0);
   }
 }

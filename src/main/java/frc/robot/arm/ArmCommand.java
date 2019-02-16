@@ -5,36 +5,42 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.DriveSubsystem;
+package frc.robot.arm;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.HumanInput;
 import frc.robot.Robot;
 
-public class DriveCommand extends Command {
-
-  private boolean smartBoardBool = false;
-  private long startTime;
-
-  public DriveCommand() {
-    requires(Robot.drivesys);
+public class ArmCommand extends Command {
+  public ArmCommand() {
+    requires(Robot.armsys);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    System.out.println("we rollin");
-    System.out.println(smartBoardBool);
-    SmartDashboard.putBoolean("testBool", smartBoardBool);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    
-    Robot.drivesys.setLeftMotors(HumanInput.getJoystickAxisLeft(HumanInput.AXIS_Y));
-    Robot.drivesys.setRightMotors(HumanInput.getJoystickAxisRight(HumanInput.AXIS_Y));
+    if(HumanInput.increasearmbutton.get()){
+      Robot.armsys.setArmMotor(0.5);
+    } else if (HumanInput.decreasearmbutton.get()){
+      Robot.armsys.setArmMotor(-0.5);
+    } else {
+      Robot.armsys.setArmMotor(0);
+    }
+
+    if(HumanInput.wristUpButton.get()){
+      Robot.armsys.setWristMotor(0.5);
+    } else if (HumanInput.wristDownButton.get()){
+      Robot.armsys.setWristMotor(-0.5);
+    } else {
+      Robot.armsys.setWristMotor(0);
+    }
+
+    System.out.println("POTNETIOMETER: " + Robot.armsys.getPotentiometer());
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -46,11 +52,15 @@ public class DriveCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.armsys.setWristMotor(0);
+    Robot.armsys.setArmMotor(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.armsys.setWristMotor(0);
+    Robot.armsys.setArmMotor(0);
   }
 }

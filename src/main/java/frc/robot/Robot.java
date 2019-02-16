@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.DriveSubsystem.DriveSubsystem;
-import frc.robot.TestSubsytem.TestSubsystem;
+import frc.robot.arm.ArmSubsystem;
+import frc.robot.intake.IntakeSubsystem;
 
 
 
@@ -29,7 +30,8 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static DriveSubsystem drivesys;
-  public static TestSubsystem testsys;
+  public static IntakeSubsystem intakesys;
+  public static ArmSubsystem armsys;
   double leftEncoderStartValue, rightEncoderStartValue;
 
   /**
@@ -42,8 +44,11 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    testsys = new TestSubsystem();
-    testsys.initDefaultCommand();
+    drivesys = new DriveSubsystem();
+    intakesys = new IntakeSubsystem();
+    armsys = new ArmSubsystem();
+    drivesys.initDefaultCommand();
+    armsys.initDefaultCommand();
   }
 
   /**
@@ -108,6 +113,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
-
+    Scheduler.getInstance().run();
   }
 }
